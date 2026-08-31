@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="180" viewBox="0 0 640 180" role="img" aria-labelledby="title desc">
+  <title id="title">TaxiSphere Logo</title>
+  <desc id="desc">TaxiSphere wordmark with a route sphere icon.</desc>
+  <rect width="640" height="180" fill="#FFFFFF"/>
+  <circle cx="92" cy="90" r="54" fill="#2E74B5"/>
+  <path d="M56 94c20-35 52-35 72 0" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="56" cy="94" r="7" fill="#F28C28"/>
+  <circle cx="92" cy="68" r="7" fill="#168A5B"/>
+  <circle cx="128" cy="94" r="7" fill="#F28C28"/>
+  <path d="M61 112h62l-9 14H70z" fill="#FFFFFF"/>
+  <text x="170" y="84" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="700" fill="#1F4D78">TaxiSphere</text>
+  <text x="172" y="118" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="500" fill="#5A6169">Enterprise Mobility Platform</text>
+</svg>
