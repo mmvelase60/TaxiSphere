@@ -17,6 +17,13 @@ The project can be upgraded to a newer Java LTS after the local toolchain and Sp
 mvn spring-boot:run
 ```
 
+Or use Docker Compose from the repository root:
+
+```text
+cd docker
+docker compose up --build
+```
+
 ## Test
 
 ```text
@@ -31,4 +38,4 @@ GET /api/v1/platform/health
 
 ## Notes
 
-Maven was not available on the current machine when this foundation was created, so build verification should run after Maven is installed or after a Maven wrapper is added.
+Maven was not available on the current machine when this foundation was created, so direct local build verification should run after Maven is installed or after a complete Maven wrapper is added. Docker builds use a Maven builder image and do not require Maven to be installed locally.

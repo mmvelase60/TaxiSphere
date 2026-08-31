@@ -1,0 +1,36 @@
+services:
+  taxisphere-db:
+    image: mysql:8.4
+    container_name: taxisphere-db
+    environment:
+      MYSQL_DATABASE: taxisphere
+      MYSQL_USER: taxisphere
+      MYSQL_PASSWORD: taxisphere_dev_password
+      MYSQL_ROOT_PASSWORD: root_dev_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - taxisphere_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  taxisphere-api:
+    build:
+      context: ../backend/taxisphere-api
+    container_name: taxisphere-api
+    depends_on:
+      taxisphere-db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://taxisphere-db:3306/taxisphere
+      SPRING_DATASOURCE_USERNAME: taxisphere
+      SPRING_DATASOURCE_PASSWORD: taxisphere_dev_password
+    ports:
+      - "8080:8080"
+
+volumes:
+  taxisphere_mysql_data:

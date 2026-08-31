@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+BASEDIR=$(dirname "$0")
+WRAPPER_JAR="$BASEDIR/.mvn/wrapper/maven-wrapper.jar"
+
+if [ ! -f "$WRAPPER_JAR" ]; then
+  echo "Maven wrapper jar is missing."
+  echo "Install Maven locally and run: mvn -N wrapper:wrapper"
+  echo "Or download dependencies in an environment with network access."
+  exit 1
+fi
+
+exec java -classpath "$WRAPPER_JAR" -Dmaven.multiModuleProjectDirectory="$BASEDIR" org.apache.maven.wrapper.MavenWrapperMain "$@"
