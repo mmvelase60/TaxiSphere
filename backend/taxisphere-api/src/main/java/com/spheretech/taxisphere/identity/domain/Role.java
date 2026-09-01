@@ -24,4 +24,22 @@ public class Role {
 
     protected Role() {
     }
+
+    public Role(UUID id, String code, String name) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

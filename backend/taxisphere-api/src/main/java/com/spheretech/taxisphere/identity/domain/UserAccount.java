@@ -2,13 +2,20 @@ package com.spheretech.taxisphere.identity.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -34,6 +41,14 @@ public class UserAccount {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 40)
     private UserStatus status;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_account_role",
+            joinColumns = @JoinColumn(name = "user_account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new LinkedHashSet<>();
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -62,5 +77,33 @@ public class UserAccount {
     @PreUpdate
     void preUpdate() {
         updatedAt = Instant.now();
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getTenantId() {
+        return tenantId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void assignRole(Role role) {
+        roles.add(role);
     }
 }

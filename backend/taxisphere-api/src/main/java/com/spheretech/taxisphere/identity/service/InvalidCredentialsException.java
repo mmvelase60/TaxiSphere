@@ -1,0 +1,8 @@
+package com.spheretech.taxisphere.identity.service;
+
+public class InvalidCredentialsException extends RuntimeException {
+
+    public InvalidCredentialsException() {
+        super("Invalid username or password.");
+    }
+}

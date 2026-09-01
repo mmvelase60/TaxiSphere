@@ -23,19 +23,26 @@ public class JwtTokenService {
     }
 
     public String createAccessToken(AuthenticatedUser user) {
+        return createAccessToken(user, accessTokenExpiresAt());
+    }
+
+    public String createAccessToken(AuthenticatedUser user, Instant expiresAt) {
         Instant now = Instant.now();
-        Instant expiry = now.plusSeconds(jwtProperties.accessTokenMinutes() * 60);
 
         return Jwts.builder()
                 .issuer(jwtProperties.issuer())
                 .subject(user.username())
                 .issuedAt(Date.from(now))
-                .expiration(Date.from(expiry))
+                .expiration(Date.from(expiresAt))
                 .claim("userId", user.userId().toString())
                 .claim("tenantId", user.tenantId() == null ? null : user.tenantId().toString())
                 .claim("roles", user.roles())
                 .signWith(secretKey())
                 .compact();
+    }
+
+    public Instant accessTokenExpiresAt() {
+        return Instant.now().plusSeconds(jwtProperties.accessTokenMinutes() * 60);
     }
 
     public Claims parseClaims(String token) {
@@ -51,7 +58,10 @@ public class JwtTokenService {
         Claims claims = parseClaims(token);
         UUID userId = UUID.fromString(claims.get("userId", String.class));
         String tenant = claims.get("tenantId", String.class);
-        List<String> roles = claims.get("roles", List.class);
+        List<?> rawRoles = claims.get("roles", List.class);
+        List<String> roles = rawRoles.stream()
+                .map(String::valueOf)
+                .toList();
 
         return new AuthenticatedUser(
                 userId,
