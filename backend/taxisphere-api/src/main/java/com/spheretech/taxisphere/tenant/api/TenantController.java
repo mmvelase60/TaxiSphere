@@ -1,5 +1,6 @@
 package com.spheretech.taxisphere.tenant.api;
 
+import com.spheretech.taxisphere.tenant.application.TenantOnboardingResult;
 import com.spheretech.taxisphere.tenant.application.TenantService;
 import java.net.URI;
 import java.util.List;
@@ -30,7 +31,8 @@ public class TenantController {
 
     @PostMapping
     public ResponseEntity<TenantResponse> create(@Validated @RequestBody CreateTenantRequest request) {
-        TenantResponse response = TenantResponse.from(tenantService.createTenant(request));
+        TenantOnboardingResult result = tenantService.createTenant(request);
+        TenantResponse response = TenantResponse.from(result.tenant(), result.adminUserId());
         return ResponseEntity
                 .created(URI.create("/api/v1/platform/tenants/" + response.id()))
                 .body(response);

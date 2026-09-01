@@ -1,6 +1,8 @@
 package com.spheretech.taxisphere.tenant.api;
 
+import com.spheretech.taxisphere.tenant.application.TenantAdminEmailAlreadyExistsException;
 import com.spheretech.taxisphere.tenant.application.TenantAlreadyExistsException;
+import com.spheretech.taxisphere.tenant.application.TenantContactEmailAlreadyExistsException;
 import java.net.URI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -15,6 +17,24 @@ public class TenantExceptionHandler {
         ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         detail.setType(URI.create("https://api.taxisphere.local/problems/tenant-already-exists"));
         detail.setTitle("Tenant already exists");
+        detail.setDetail(exception.getMessage());
+        return detail;
+    }
+
+    @ExceptionHandler(TenantContactEmailAlreadyExistsException.class)
+    public ProblemDetail handleTenantContactEmailAlreadyExists(TenantContactEmailAlreadyExistsException exception) {
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        detail.setType(URI.create("https://api.taxisphere.local/problems/tenant-contact-email-already-exists"));
+        detail.setTitle("Tenant contact email already exists");
+        detail.setDetail(exception.getMessage());
+        return detail;
+    }
+
+    @ExceptionHandler(TenantAdminEmailAlreadyExistsException.class)
+    public ProblemDetail handleTenantAdminEmailAlreadyExists(TenantAdminEmailAlreadyExistsException exception) {
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        detail.setType(URI.create("https://api.taxisphere.local/problems/tenant-admin-email-already-exists"));
+        detail.setTitle("Tenant administrator email already exists");
         detail.setDetail(exception.getMessage());
         return detail;
     }
