@@ -13,4 +13,6 @@ public interface TaxiRouteRepository extends JpaRepository<TaxiRoute, UUID> {
     Optional<TaxiRoute> findByIdAndTenantId(UUID id, UUID tenantId);
 
     boolean existsByTenantIdAndCodeIgnoreCase(UUID tenantId, String code);
+
+    long countByTenantId(UUID tenantId);
 }

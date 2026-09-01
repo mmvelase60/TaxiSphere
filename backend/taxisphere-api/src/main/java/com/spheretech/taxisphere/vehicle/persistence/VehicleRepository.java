@@ -1,6 +1,7 @@
 package com.spheretech.taxisphere.vehicle.persistence;
 
 import com.spheretech.taxisphere.vehicle.domain.Vehicle;
+import com.spheretech.taxisphere.vehicle.domain.VehicleStatus;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,4 +16,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID> {
     boolean existsByTenantIdAndRegistrationNumberIgnoreCase(UUID tenantId, String registrationNumber);
 
     boolean existsByTenantIdAndVinIgnoreCase(UUID tenantId, String vin);
+
+    long countByTenantId(UUID tenantId);
+
+    long countByTenantIdAndStatus(UUID tenantId, VehicleStatus status);
 }

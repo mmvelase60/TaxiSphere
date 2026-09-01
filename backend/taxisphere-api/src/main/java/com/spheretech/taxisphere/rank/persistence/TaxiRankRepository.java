@@ -13,4 +13,6 @@ public interface TaxiRankRepository extends JpaRepository<TaxiRank, UUID> {
     Optional<TaxiRank> findByIdAndTenantId(UUID id, UUID tenantId);
 
     boolean existsByTenantIdAndCodeIgnoreCase(UUID tenantId, String code);
+
+    long countByTenantId(UUID tenantId);
 }

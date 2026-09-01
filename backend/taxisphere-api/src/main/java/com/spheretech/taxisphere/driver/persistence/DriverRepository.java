@@ -1,6 +1,7 @@
 package com.spheretech.taxisphere.driver.persistence;
 
 import com.spheretech.taxisphere.driver.domain.Driver;
+import com.spheretech.taxisphere.driver.domain.DriverStatus;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,4 +16,8 @@ public interface DriverRepository extends JpaRepository<Driver, UUID> {
     boolean existsByTenantIdAndLicenseNumberIgnoreCase(UUID tenantId, String licenseNumber);
 
     boolean existsByTenantIdAndPdpNumberIgnoreCase(UUID tenantId, String pdpNumber);
+
+    long countByTenantId(UUID tenantId);
+
+    long countByTenantIdAndStatus(UUID tenantId, DriverStatus status);
 }
