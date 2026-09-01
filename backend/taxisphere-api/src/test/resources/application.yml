@@ -9,3 +9,21 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+taxisphere:
+  platform:
+    name: TaxiSphere Enterprise Mobility Platform
+    version: 0.1.0-test
+  security:
+    bootstrap-admin:
+      username: platform-admin
+      password: change-me
+    jwt:
+      issuer: TaxiSphere
+      secret: test-secret-must-be-at-least-32-bytes-long
+      access-token-minutes: 30
+  identity:
+    bootstrap:
+      enabled: false
+      email:
+      password:
