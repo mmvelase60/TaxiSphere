@@ -1,5 +1,6 @@
 package com.spheretech.taxisphere.trip.api;
 
+import com.spheretech.taxisphere.trip.application.InvalidTripStatusTransitionException;
 import com.spheretech.taxisphere.trip.application.TripNotFoundException;
 import com.spheretech.taxisphere.trip.application.VehicleAssignmentNotActiveException;
 import java.net.URI;
@@ -25,6 +26,15 @@ public class TripExceptionHandler {
         ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         detail.setType(URI.create("https://api.taxisphere.local/problems/vehicle-assignment-not-active"));
         detail.setTitle("Vehicle assignment not active");
+        detail.setDetail(exception.getMessage());
+        return detail;
+    }
+
+    @ExceptionHandler(InvalidTripStatusTransitionException.class)
+    public ProblemDetail handleInvalidTripStatusTransition(InvalidTripStatusTransitionException exception) {
+        ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        detail.setType(URI.create("https://api.taxisphere.local/problems/invalid-trip-status-transition"));
+        detail.setTitle("Invalid trip status transition");
         detail.setDetail(exception.getMessage());
         return detail;
     }

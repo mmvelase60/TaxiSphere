@@ -84,6 +84,27 @@ public class TripService {
         return tripRepository.save(trip);
     }
 
+    @Transactional
+    public Trip departTrip(UUID tripId) {
+        Trip trip = findByIdForCurrentTenant(tripId);
+        trip.markDeparted(Instant.now());
+        return tripRepository.save(trip);
+    }
+
+    @Transactional
+    public Trip arriveTrip(UUID tripId) {
+        Trip trip = findByIdForCurrentTenant(tripId);
+        trip.markArrived(Instant.now());
+        return tripRepository.save(trip);
+    }
+
+    @Transactional
+    public Trip cancelTrip(UUID tripId) {
+        Trip trip = findByIdForCurrentTenant(tripId);
+        trip.cancel();
+        return tripRepository.save(trip);
+    }
+
     private UUID currentTenantId() {
         return TenantContextHolder.current()
                 .orElseThrow(TenantContextRequiredException::new)

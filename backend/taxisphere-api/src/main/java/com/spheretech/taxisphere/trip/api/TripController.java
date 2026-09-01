@@ -46,4 +46,22 @@ public class TripController {
                 .created(URI.create("/api/v1/trips/" + response.id()))
                 .body(response);
     }
+
+    @PostMapping("/{tripId}/depart")
+    @PreAuthorize("hasAnyRole('ASSOCIATION_ADMIN', 'OPERATIONS_MANAGER', 'RANK_MANAGER', 'DISPATCHER')")
+    public TripResponse depart(@PathVariable UUID tripId) {
+        return TripResponse.from(tripService.departTrip(tripId));
+    }
+
+    @PostMapping("/{tripId}/arrive")
+    @PreAuthorize("hasAnyRole('ASSOCIATION_ADMIN', 'OPERATIONS_MANAGER', 'RANK_MANAGER', 'DISPATCHER')")
+    public TripResponse arrive(@PathVariable UUID tripId) {
+        return TripResponse.from(tripService.arriveTrip(tripId));
+    }
+
+    @PostMapping("/{tripId}/cancel")
+    @PreAuthorize("hasAnyRole('ASSOCIATION_ADMIN', 'OPERATIONS_MANAGER', 'RANK_MANAGER', 'DISPATCHER')")
+    public TripResponse cancel(@PathVariable UUID tripId) {
+        return TripResponse.from(tripService.cancelTrip(tripId));
+    }
 }

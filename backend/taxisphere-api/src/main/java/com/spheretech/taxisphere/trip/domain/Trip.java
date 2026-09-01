@@ -1,5 +1,6 @@
 package com.spheretech.taxisphere.trip.domain;
 
+import com.spheretech.taxisphere.trip.application.InvalidTripStatusTransitionException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -115,6 +116,29 @@ public class Trip {
     @PreUpdate
     void preUpdate() {
         updatedAt = Instant.now();
+    }
+
+    public void markDeparted(Instant departedAt) {
+        if (status != TripStatus.DISPATCHED) {
+            throw new InvalidTripStatusTransitionException(status, TripStatus.DEPARTED);
+        }
+        this.status = TripStatus.DEPARTED;
+        this.departedAt = departedAt;
+    }
+
+    public void markArrived(Instant arrivedAt) {
+        if (status != TripStatus.DEPARTED) {
+            throw new InvalidTripStatusTransitionException(status, TripStatus.ARRIVED);
+        }
+        this.status = TripStatus.ARRIVED;
+        this.arrivedAt = arrivedAt;
+    }
+
+    public void cancel() {
+        if (status == TripStatus.ARRIVED || status == TripStatus.CANCELLED) {
+            throw new InvalidTripStatusTransitionException(status, TripStatus.CANCELLED);
+        }
+        this.status = TripStatus.CANCELLED;
     }
 
     public UUID getId() {
