@@ -2,6 +2,7 @@ package com.spheretech.taxisphere.vehicle.persistence;
 
 import com.spheretech.taxisphere.vehicle.domain.Vehicle;
 import com.spheretech.taxisphere.vehicle.domain.VehicleStatus;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,4 +21,12 @@ public interface VehicleRepository extends JpaRepository<Vehicle, UUID> {
     long countByTenantId(UUID tenantId);
 
     long countByTenantIdAndStatus(UUID tenantId, VehicleStatus status);
+
+    long countByTenantIdAndRoadworthyExpiryDateBefore(UUID tenantId, LocalDate date);
+
+    long countByTenantIdAndRoadworthyExpiryDateBetween(UUID tenantId, LocalDate startDate, LocalDate endDate);
+
+    long countByTenantIdAndInsuranceExpiryDateBefore(UUID tenantId, LocalDate date);
+
+    long countByTenantIdAndInsuranceExpiryDateBetween(UUID tenantId, LocalDate startDate, LocalDate endDate);
 }

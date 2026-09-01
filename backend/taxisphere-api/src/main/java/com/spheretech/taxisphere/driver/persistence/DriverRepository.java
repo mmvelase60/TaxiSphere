@@ -2,6 +2,7 @@ package com.spheretech.taxisphere.driver.persistence;
 
 import com.spheretech.taxisphere.driver.domain.Driver;
 import com.spheretech.taxisphere.driver.domain.DriverStatus;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,4 +21,12 @@ public interface DriverRepository extends JpaRepository<Driver, UUID> {
     long countByTenantId(UUID tenantId);
 
     long countByTenantIdAndStatus(UUID tenantId, DriverStatus status);
+
+    long countByTenantIdAndLicenseExpiryDateBefore(UUID tenantId, LocalDate date);
+
+    long countByTenantIdAndLicenseExpiryDateBetween(UUID tenantId, LocalDate startDate, LocalDate endDate);
+
+    long countByTenantIdAndPdpExpiryDateBefore(UUID tenantId, LocalDate date);
+
+    long countByTenantIdAndPdpExpiryDateBetween(UUID tenantId, LocalDate startDate, LocalDate endDate);
 }
