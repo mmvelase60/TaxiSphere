@@ -10,3 +10,7 @@ taxisphere:
     bootstrap-admin:
       username: ${TAXISPHERE_BOOTSTRAP_ADMIN_USERNAME}
       password: ${TAXISPHERE_BOOTSTRAP_ADMIN_PASSWORD}
+    jwt:
+      issuer: ${TAXISPHERE_JWT_ISSUER}
+      secret: ${TAXISPHERE_JWT_SECRET}
+      access-token-minutes: ${TAXISPHERE_JWT_ACCESS_TOKEN_MINUTES}
