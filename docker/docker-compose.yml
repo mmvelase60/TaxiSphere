@@ -29,6 +29,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://taxisphere-db:3306/taxisphere
       SPRING_DATASOURCE_USERNAME: taxisphere
       SPRING_DATASOURCE_PASSWORD: taxisphere_dev_password
+      TAXISPHERE_BOOTSTRAP_ADMIN_USERNAME: platform-admin
+      TAXISPHERE_BOOTSTRAP_ADMIN_PASSWORD: change-me
     ports:
       - "8080:8080"
 
