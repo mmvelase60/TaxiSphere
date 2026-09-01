@@ -26,6 +26,26 @@ public interface TripRepository extends JpaRepository<Trip, UUID> {
 
     long countByTenantIdAndStatusIn(UUID tenantId, Collection<TripStatus> statuses);
 
+    long countByTenantIdAndStatusAndDispatchedAtGreaterThanEqualAndDispatchedAtLessThan(
+            UUID tenantId,
+            TripStatus status,
+            Instant start,
+            Instant end
+    );
+
+    @Query("""
+            select sum(trip.passengerCount)
+            from Trip trip
+            where trip.tenantId = :tenantId
+              and trip.dispatchedAt >= :start
+              and trip.dispatchedAt < :end
+            """)
+    Long sumPassengerCountForPeriod(
+            @Param("tenantId") UUID tenantId,
+            @Param("start") Instant start,
+            @Param("end") Instant end
+    );
+
     @Query("""
             select sum(trip.totalRevenue)
             from Trip trip
