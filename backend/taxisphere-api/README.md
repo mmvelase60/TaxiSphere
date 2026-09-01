@@ -1,41 +1,29 @@
-# TaxiSphere API
+# Backend API
 
-This folder contains the Spring Boot backend for the TaxiSphere Enterprise Mobility Platform.
+TaxiSphere API is the Spring Boot backend for the TaxiSphere Enterprise Mobility Platform.
 
-## Current Baseline
+## Local Authentication
 
-- Java: 17 for the initial local foundation because the current development machine has Java 17 installed.
-- Framework: Spring Boot 3.3.5.
-- Build tool: Maven.
-- Package root: `com.spheretech.taxisphere`.
+The database migration seeds core security roles only. It does not seed a static administrator password.
 
-The project can be upgraded to a newer Java LTS after the local toolchain and Spring Boot support are aligned.
-
-## Run
+For local development, create the first platform administrator by enabling the identity bootstrap runner with environment variables:
 
 ```text
-mvn spring-boot:run
+TAXISPHERE_IDENTITY_BOOTSTRAP_ENABLED=true
+TAXISPHERE_IDENTITY_BOOTSTRAP_EMAIL=platform-admin@taxisphere.local
+TAXISPHERE_IDENTITY_BOOTSTRAP_PASSWORD=<choose-a-local-password>
 ```
 
-Or use Docker Compose from the repository root:
+After startup, use the configured email and password with:
 
-```text
-cd docker
-docker compose up --build
+```http
+POST /api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "platform-admin@taxisphere.local",
+  "password": "<your-local-password>"
+}
 ```
 
-## Test
-
-```text
-mvn test
-```
-
-## Health Endpoint
-
-```text
-GET /api/v1/platform/health
-```
-
-## Notes
-
-Maven was not available on the current machine when this foundation was created, so direct local build verification should run after Maven is installed or after a complete Maven wrapper is added. Docker builds use a Maven builder image and do not require Maven to be installed locally.
+Successful login returns a Bearer JWT access token.

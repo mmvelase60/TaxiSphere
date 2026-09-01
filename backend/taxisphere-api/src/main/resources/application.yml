@@ -42,3 +42,8 @@ taxisphere:
       issuer: ${TAXISPHERE_JWT_ISSUER:TaxiSphere}
       secret: ${TAXISPHERE_JWT_SECRET:local-development-secret-must-be-replaced-before-production}
       access-token-minutes: ${TAXISPHERE_JWT_ACCESS_TOKEN_MINUTES:30}
+  identity:
+    bootstrap:
+      enabled: ${TAXISPHERE_IDENTITY_BOOTSTRAP_ENABLED:false}
+      email: ${TAXISPHERE_IDENTITY_BOOTSTRAP_EMAIL:}
+      password: ${TAXISPHERE_IDENTITY_BOOTSTRAP_PASSWORD:}

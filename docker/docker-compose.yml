@@ -1,41 +1,46 @@
 services:
-  taxisphere-db:
+  mysql:
     image: mysql:8.4
-    container_name: taxisphere-db
+    container_name: taxisphere-mysql
+    restart: unless-stopped
     environment:
-      MYSQL_DATABASE: taxisphere
-      MYSQL_USER: taxisphere
-      MYSQL_PASSWORD: taxisphere_dev_password
-      MYSQL_ROOT_PASSWORD: root_dev_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-taxisphere}
+      MYSQL_USER: ${MYSQL_USER:-taxisphere}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-taxisphere}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
     ports:
       - "3306:3306"
     volumes:
-      - taxisphere_mysql_data:/var/lib/mysql
+      - taxisphere-mysql-data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
 
   taxisphere-api:
     build:
       context: ../backend/taxisphere-api
+      dockerfile: Dockerfile
     container_name: taxisphere-api
     depends_on:
-      taxisphere-db:
+      mysql:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_DATASOURCE_URL: jdbc:mysql://taxisphere-db:3306/taxisphere
-      SPRING_DATASOURCE_USERNAME: taxisphere
-      SPRING_DATASOURCE_PASSWORD: taxisphere_dev_password
-      TAXISPHERE_BOOTSTRAP_ADMIN_USERNAME: platform-admin
-      TAXISPHERE_BOOTSTRAP_ADMIN_PASSWORD: change-me
-      TAXISPHERE_JWT_ISSUER: TaxiSphere
-      TAXISPHERE_JWT_SECRET: replace-with-at-least-32-bytes-of-secret-key-material
-      TAXISPHERE_JWT_ACCESS_TOKEN_MINUTES: 30
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-taxisphere}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-taxisphere}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-taxisphere}
+      TAXISPHERE_BOOTSTRAP_ADMIN_USERNAME: ${TAXISPHERE_BOOTSTRAP_ADMIN_USERNAME:-platform-admin}
+      TAXISPHERE_BOOTSTRAP_ADMIN_PASSWORD: ${TAXISPHERE_BOOTSTRAP_ADMIN_PASSWORD:-change-me}
+      TAXISPHERE_JWT_ISSUER: ${TAXISPHERE_JWT_ISSUER:-TaxiSphere}
+      TAXISPHERE_JWT_SECRET: ${TAXISPHERE_JWT_SECRET:-local-development-secret-must-be-replaced-before-production}
+      TAXISPHERE_JWT_ACCESS_TOKEN_MINUTES: ${TAXISPHERE_JWT_ACCESS_TOKEN_MINUTES:-30}
+      TAXISPHERE_IDENTITY_BOOTSTRAP_ENABLED: ${TAXISPHERE_IDENTITY_BOOTSTRAP_ENABLED:-false}
+      TAXISPHERE_IDENTITY_BOOTSTRAP_EMAIL: ${TAXISPHERE_IDENTITY_BOOTSTRAP_EMAIL:-}
+      TAXISPHERE_IDENTITY_BOOTSTRAP_PASSWORD: ${TAXISPHERE_IDENTITY_BOOTSTRAP_PASSWORD:-}
     ports:
       - "8080:8080"
 
 volumes:
-  taxisphere_mysql_data:
+  taxisphere-mysql-data:
